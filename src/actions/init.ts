@@ -3,7 +3,7 @@ import { getMeals } from "./meal";
 import { getSavedMeals } from "./savedMeal";
 
 export function initData() {
-  getGoal();
-  getMeals();
-  getSavedMeals();
+	getGoal();
+	getMeals();
+	getSavedMeals();
 }
