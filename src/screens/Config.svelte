@@ -1,47 +1,70 @@
 <script lang="ts">
-  import New from "../components/New.svelte";
-  import History from "../components/History.svelte";
-  import type { Meal } from "../types";
-  import { savedMealsS } from "../stores";
+  import NewMeal from "../components/NewMeal.svelte";
+  import MealHistory from "../components/MealHistory.svelte";
+  import type { Meal, Ingredient } from "../types";
+  import { savedMealsS, savedIngredientsS } from "../stores";
   import {
     addSavedMeal,
     deleteSavedMeal,
     updateSavedMeal,
   } from "../actions/savedMeal";
+  import {
+    addSavedIngredient,
+    deleteSavedIngredient,
+    updateSavedIngredient,
+  } from "../actions/savedIngredient";
   import Goal from "../components/Goal.svelte";
   import { goToMain } from "../actions/page";
   import Split from "./Split.svelte";
-  import { lsManualReset } from "../actions/persistence/localStorage";
+  import IngredientHistory from "../components/IngredientHistory.svelte";
+  import NewIngredient from "../components/NewIngredient.svelte";
 
   let savedMeals: Meal[];
   savedMealsS.subscribe((v) => {
     savedMeals = v;
   });
+
+  let savedIngredients: Ingredient[];
+  savedIngredientsS.subscribe((v) => {
+    savedIngredients = v;
+  });
 </script>
 
 <Split>
-  <Goal slot="TopLeft" />
-  <History
-    slot="BottomLeft"
+  <Goal slot="Top" />
+  <MealHistory
+    slot="Left"
     title="Saved Meals"
     meals={savedMeals}
     updateMeal={updateSavedMeal}
     deleteMeal={deleteSavedMeal}
   />
-  <New
+  <NewMeal
     slot="Right"
     title="Save Meal"
     addMeal={addSavedMeal}
     autofillMeals={null}
+    autofillIngredients={null}
   />
   <svelte:fragment slot="Actions">
-    {#if window.location.hostname === "localhost"}
-      <button on:click={lsManualReset} class="actionButton">Reset data</button>
-    {/if}
     <button on:click={goToMain} class="actionButton"
       ><i class="home" /> Home</button
     >
   </svelte:fragment>
+  <IngredientHistory
+    slot="Left2"
+    title="Saved Ingredients"
+    ingredients={savedIngredients}
+    updateIngredient={updateSavedIngredient}
+    deleteIngredient={deleteSavedIngredient}
+  />
+  <NewIngredient
+    slot="Right2"
+    title="Save Ingredient"
+    addIngredient={addSavedIngredient}
+    autofillIngredients={null}
+    condenseView={false}
+  />
 </Split>
 
 <style>

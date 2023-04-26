@@ -1,19 +1,25 @@
 <script lang="ts">
-  import { prec } from "../util";
+  import { displayRatio } from "../util";
 
   import {
     mkDateString,
     type Meal,
     type MealDto,
     type AddMeal,
+    type Ingredient,
+    type IngredientDto,
   } from "../types";
   import { mkMealDto } from "../types";
+  import NewIngredient from "./NewIngredient.svelte";
 
   export let title: string;
   export let addMeal: AddMeal;
   export let autofillMeals: Meal[] | null;
+  export let autofillIngredients: Ingredient[] | null;
 
   let newMealDto: MealDto = mkMealDto();
+  let ingredientCount = 0;
+  let currentIngredientAmount = 0;
 
   let handleSubmit = async () => {
     const r = await addMeal(newMealDto);
@@ -26,24 +32,23 @@
   let handleAutofillChange = (e: any) => {
     const v = JSON.parse(e.target.value);
     if (v === null) {
-      newMealDto = {
-        name: "",
-        calories: 0,
-        protein: 0,
-        date: mkDateString(),
-      };
+      newMealDto = mkMealDto();
     } else {
       const { name, calories, protein } = v;
       newMealDto = { name, calories, protein, date: mkDateString() };
     }
   };
 
-  function displayRatio(n: number) {
-    const r = prec(n).toString();
-    if (r !== "NaN" && r !== "Infinity") {
-      return r;
-    }
-    return null;
+  function addIngredientRow() {
+    ingredientCount += 1;
+  }
+
+  function addIngredient(igrDto: IngredientDto) {
+    const ratio = currentIngredientAmount / igrDto.grams;
+    newMealDto.calories += Math.round(ratio * igrDto.calories);
+    newMealDto.protein += Math.round(ratio * igrDto.protein);
+    currentIngredientAmount = 0;
+    return { ok: true };
   }
 </script>
 
@@ -95,8 +100,33 @@
       disabled
     />
   </label>
+  {#each Array(ingredientCount) as _}
+    <NewIngredient
+      title={null}
+      {autofillIngredients}
+      condenseView={true}
+      {addIngredient}
+    />
+    <label for="new-meal-igr-amount"
+      >Amount (g)
+      <input
+        type="number"
+        name="new-meal-igr-amount"
+        bind:value={currentIngredientAmount}
+        id="new-meal-igr-amount"
+      />
+    </label>
+  {/each}
+  <button on:click|preventDefault={addIngredientRow} class="ingredient-button"
+    >+ Add Ingredient</button
+  >
   <input type="submit" value="Add Meal" />
 </form>
 
 <style>
+  .ingredient-button {
+    display: block;
+    text-align: center;
+    margin: 0 auto 1vh;
+  }
 </style>

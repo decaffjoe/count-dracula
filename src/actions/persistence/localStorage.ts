@@ -77,21 +77,21 @@ export function lsDeleteSavedMeal(id: number): Result<number> {
 }
 
 // SAVED INGREDIENTS
-function lsGetSavedIngredients(): Result<Ingredient[]> {
+export function lsGetSavedIngredients(): Result<Ingredient[]> {
 	return get(KEYS.savedIngredients);
 }
 
-function lsAddSavedIngredient(
+export function lsAddSavedIngredient(
 	ingredientDto: IngredientDto,
 ): Result<Ingredient> {
 	return add(KEYS.savedIngredients, ingredientDto);
 }
 
-function lsUpdateSavedIngredient(ingredient: Ingredient): Result<Ingredient> {
+export function lsUpdateSavedIngredient(ingredient: Ingredient): Result<Ingredient> {
 	return update(KEYS.savedIngredients, ingredient);
 }
 
-function lsRemoveSavedIngredient(id: number): Result<number> {
+export function lsRemoveSavedIngredient(id: number): Result<number> {
 	return remove(KEYS.savedIngredients, id);
 }
 

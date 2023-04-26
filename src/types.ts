@@ -14,7 +14,7 @@ export interface Id {
 	id: number;
 }
 
-export interface Meal extends Id, MealDto {}
+export interface Meal extends Id, MealDto { }
 
 export interface MealDto {
 	name: string;
@@ -42,12 +42,25 @@ export interface Goal {
 	protein: number;
 }
 
-export interface Ingredient extends Id, IngredientDto {}
+export interface Ingredient extends Id, IngredientDto { }
 
 export interface IngredientDto {
 	name: string;
-	servingAmount: number;
-	servingAmountUnit: string;
-	servingCalories: number;
-	servingProtein: number;
+	calories: number;
+	protein: number;
+	grams: number;
+}
+
+export type GetIngredients = () => Promise<Result>;
+export type AddIngredient = (ingredientDto: IngredientDto) => Promise<Result>;
+export type UpdateIngredient = (ingredient: Ingredient) => Promise<Result>;
+export type DeleteIngredient = (id: number) => Promise<Result>;
+
+export function mkIngredientDto(): IngredientDto {
+	return {
+		name: "",
+		calories: 0,
+		protein: 0,
+		grams: 0,
+	};
 }

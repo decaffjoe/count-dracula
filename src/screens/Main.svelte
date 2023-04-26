@@ -1,11 +1,10 @@
 <script lang="ts">
-  import History from "../components/History.svelte";
-  import New from "../components/New.svelte";
+  import MealHistory from "../components/MealHistory.svelte";
+  import NewMeal from "../components/NewMeal.svelte";
   import Overview from "../components/Overview.svelte";
-  import { lsManualReset } from "../actions/persistence/localStorage";
   import { addMeal, deleteMeal, updateMeal } from "../actions/meal";
-  import type { Meal } from "../types";
-  import { mealsS, savedMealsS } from "../stores";
+  import type { Meal, Ingredient } from "../types";
+  import { mealsS, savedMealsS, savedIngredientsS } from "../stores";
   import { goToConfig } from "../actions/page";
   import Split from "./Split.svelte";
 
@@ -18,22 +17,30 @@
   savedMealsS.subscribe((v) => {
     savedMeals = v;
   });
+
+  let savedIngredients: Ingredient[];
+  savedIngredientsS.subscribe((v) => {
+    savedIngredients = v;
+  });
 </script>
 
 <Split>
-  <Overview slot="TopLeft" />
-  <History
-    slot="BottomLeft"
+  <Overview slot="Top" />
+  <MealHistory
+    slot="Left"
     title="Today's Meals"
     {meals}
     {updateMeal}
     {deleteMeal}
   />
-  <New slot="Right" title="Add Meal" {addMeal} autofillMeals={savedMeals} />
+  <NewMeal
+    slot="Right"
+    title="Add Meal"
+    {addMeal}
+    autofillMeals={savedMeals}
+    autofillIngredients={savedIngredients}
+  />
   <svelte:fragment slot="Actions">
-    {#if window.location.hostname === "localhost"}
-      <button on:click={lsManualReset} class="actionButton">Reset data</button>
-    {/if}
     <button on:click={goToConfig} class="actionButton"
       ><i class="gear" /> Configuration</button
     >
