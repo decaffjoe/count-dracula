@@ -32,6 +32,13 @@
 
 <Split>
   <Goal slot="Top" />
+  <NewMeal
+    slot="Right"
+    title="Save Meal"
+    addMeal={addSavedMeal}
+    autofillMeals={null}
+    autofillIngredients={savedIngredients}
+  />
   <MealHistory
     slot="Left"
     title="Saved Meals"
@@ -39,31 +46,24 @@
     updateMeal={updateSavedMeal}
     deleteMeal={deleteSavedMeal}
   />
-  <NewMeal
-    slot="Right"
-    title="Save Meal"
-    addMeal={addSavedMeal}
-    autofillMeals={null}
-    autofillIngredients={null}
-  />
   <svelte:fragment slot="Actions">
     <button on:click={goToMain} class="actionButton"
       ><i class="home" /> Home</button
     >
   </svelte:fragment>
-  <IngredientHistory
-    slot="Left2"
-    title="Saved Ingredients"
-    ingredients={savedIngredients}
-    updateIngredient={updateSavedIngredient}
-    deleteIngredient={deleteSavedIngredient}
-  />
   <NewIngredient
     slot="Right2"
     title="Save Ingredient"
     addIngredient={addSavedIngredient}
     autofillIngredients={null}
     condenseView={false}
+  />
+  <IngredientHistory
+    slot="Left2"
+    title="Saved Ingredients"
+    ingredients={savedIngredients}
+    updateIngredient={updateSavedIngredient}
+    deleteIngredient={deleteSavedIngredient}
   />
 </Split>
 
