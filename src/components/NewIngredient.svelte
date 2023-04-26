@@ -93,24 +93,30 @@
   <label for="new-igr-ratio" class="ratio"
     >c/p
     <input
-      class="ratio"
+      class={condenseView ? "condenseInput ratio" : "ratio"}
       type="text"
       value={displayRatio(newIgrDto.calories / newIgrDto.protein)}
       id="new-igr-ratio"
       disabled
     />
   </label>
-  <input type="submit" value="Add ingredient" />
+  <input class={condenseView ? "condenseInput" : ""} type="submit" value="+" />
 </form>
 
 <style>
   .condenseForm {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(6, 1fr);
     column-gap: 1vw;
   }
 
   .condenseInput {
-    max-width: 30vw;
+    max-width: calc(30vw / 6);
+  }
+
+  @media (max-width: 1200px) {
+    .condenseInput {
+      max-width: calc(95vw / 6);
+    }
   }
 </style>
