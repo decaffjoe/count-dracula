@@ -46,9 +46,9 @@ export interface Ingredient extends Id, IngredientDto { }
 
 export interface IngredientDto {
 	name: string;
-	calories: number;
-	protein: number;
-	grams: number;
+	servingCalories: number;
+	servingProtein: number;
+	servingGrams: number;
 }
 
 export type GetIngredients = () => Promise<Result>;
@@ -59,8 +59,21 @@ export type DeleteIngredient = (id: number) => Promise<Result>;
 export function mkIngredientDto(): IngredientDto {
 	return {
 		name: "",
-		calories: 0,
-		protein: 0,
-		grams: 0,
+		servingCalories: 0,
+		servingProtein: 0,
+		servingGrams: 0,
+	};
+}
+
+export interface MealIngredientDto extends IngredientDto {
+	amountGrams: number;
+	added: boolean;
+}
+
+export function mkMealIngredientDto(): MealIngredientDto {
+	return {
+		...mkIngredientDto(),
+		amountGrams: 0,
+		added: false,
 	};
 }

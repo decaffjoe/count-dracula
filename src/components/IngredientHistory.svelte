@@ -22,10 +22,12 @@
       {#if editId !== igr.id}
         <!-- Regular display -->
         <h3>{igr.name}</h3>
-        <p>Grams {igr.grams}</p>
-        <p>Calories {igr.calories}</p>
-        <p>Protein {igr.protein}</p>
-        <p class="ratio">c/p {prec(igr.calories / igr.protein)}</p>
+        <p>Grams {igr.servingGrams}</p>
+        <p>Calories {igr.servingCalories}</p>
+        <p>Protein {igr.servingProtein}</p>
+        <p class="ratio">
+          c/p {prec(igr.servingCalories / igr.servingProtein)}
+        </p>
         <button on:click={() => (editId = igr.id)}>Edit</button>
         <button on:click={() => deleteIngredient(igr.id)}>Delete</button>
       {:else}
@@ -44,7 +46,7 @@
           <input
             type="number"
             name="igr.grams"
-            bind:value={igr.grams}
+            bind:value={igr.servingGrams}
             id="igr-grams"
           />
         </label>
@@ -53,7 +55,7 @@
           <input
             type="number"
             name="igr.calories"
-            bind:value={igr.calories}
+            bind:value={igr.servingCalories}
             id="igr-calories"
           />
         </label>
@@ -62,7 +64,7 @@
           <input
             type="number"
             name="igr.protein"
-            bind:value={igr.protein}
+            bind:value={igr.servingProtein}
             id="igr-protein"
           />
         </label>

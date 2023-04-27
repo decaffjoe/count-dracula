@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { createEventDispatcher } from "svelte";
   import { displayRatio } from "../util";
   import {
     mkIngredientDto,
@@ -7,10 +8,9 @@
     type AddIngredient,
   } from "../types";
 
-  export let title: string | null;
+  export let title: string;
   export let addIngredient: AddIngredient;
   export let autofillIngredients: Ingredient[] | null;
-  export let condenseView: boolean;
 
   let newIgrDto: IngredientDto = mkIngredientDto();
 
@@ -28,15 +28,29 @@
       newIgrDto = mkIngredientDto();
     } else {
       const { name, calories, protein, grams } = v;
-      newIgrDto = { name, calories, protein, grams };
+      newIgrDto = {
+        name,
+        servingCalories: calories,
+        servingProtein: protein,
+        servingGrams: grams,
+      };
     }
+    sendDataUpdateMsg();
   };
+
+  // listened to by <NewMeal />
+  const dispatch = createEventDispatcher();
+  function sendDataUpdateMsg() {
+    dispatch("newIgrUpdate", {
+      ...newIgrDto,
+    });
+  }
 </script>
 
 {#if title}
   <h1 class="sectionTitle">{title}</h1>
 {/if}
-{#if autofillIngredients && autofillIngredients.length > 0}
+{#if autofillIngredients?.length > 0}
   <label for="saved">Saved Ingredients</label>
   <select name="saved" id="" on:change={handleAutofillChange}>
     <option value={null}>-</option>
@@ -46,9 +60,9 @@
   </select>
 {/if}
 <form
+  on:input={sendDataUpdateMsg}
   on:submit|preventDefault={handleSubmit}
   method="post"
-  class={condenseView ? "condenseForm" : ""}
 >
   <label for="new-igr-name"
     >Name
@@ -57,7 +71,6 @@
       name="newIgr.name"
       bind:value={newIgrDto.name}
       id="new-igr-name"
-      class={condenseView ? "condenseInput" : ""}
     />
   </label>
   <label for="new-igr-grams"
@@ -65,9 +78,8 @@
     <input
       type="number"
       name="newIgr.grams"
-      bind:value={newIgrDto.grams}
+      bind:value={newIgrDto.servingGrams}
       id="new-igr-grams"
-      class={condenseView ? "condenseInput" : ""}
     />
   </label>
   <label for="new-igr-calories"
@@ -75,9 +87,8 @@
     <input
       type="number"
       name="newIgr.calories"
-      bind:value={newIgrDto.calories}
+      bind:value={newIgrDto.servingCalories}
       id="new-igr-calories"
-      class={condenseView ? "condenseInput" : ""}
     />
   </label>
   <label for="new-igr-protein"
@@ -85,38 +96,22 @@
     <input
       type="number"
       name="newIgr.protein"
-      bind:value={newIgrDto.protein}
+      bind:value={newIgrDto.servingProtein}
       id="new-igr-protein"
-      class={condenseView ? "condenseInput" : ""}
     />
   </label>
   <label for="new-igr-ratio" class="ratio"
     >c/p
     <input
-      class={condenseView ? "condenseInput ratio" : "ratio"}
+      class="ratio"
       type="text"
-      value={displayRatio(newIgrDto.calories / newIgrDto.protein)}
+      value={displayRatio(newIgrDto.servingCalories / newIgrDto.servingProtein)}
       id="new-igr-ratio"
       disabled
     />
   </label>
-  <input class={condenseView ? "condenseInput" : ""} type="submit" value="+" />
+  <input type="submit" value="Add Ingredient" />
 </form>
 
 <style>
-  .condenseForm {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    column-gap: 1vw;
-  }
-
-  .condenseInput {
-    max-width: calc(30vw / 6);
-  }
-
-  @media (max-width: 1200px) {
-    .condenseInput {
-      max-width: calc(95vw / 6);
-    }
-  }
 </style>

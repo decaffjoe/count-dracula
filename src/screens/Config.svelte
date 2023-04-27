@@ -56,7 +56,6 @@
     title="Save Ingredient"
     addIngredient={addSavedIngredient}
     autofillIngredients={null}
-    condenseView={false}
   />
   <IngredientHistory
     slot="Left2"
