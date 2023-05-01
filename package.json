@@ -1,7 +1,7 @@
 {
   "name": "count-dracula",
   "private": false,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -16,12 +16,13 @@
     "@sveltejs/vite-plugin-svelte": "^1.0.1",
     "@tsconfig/svelte": "^3.0.0",
     "@zerodevx/svelte-toast": "^0.7.2",
+    "rome": "^0.9.2-next",
     "svelte": "^3.49.0",
     "svelte-check": "^2.8.0",
     "svelte-preprocess": "^4.10.7",
-    "rome": "^0.9.2-next",
     "tslib": "^2.4.0",
     "typescript": "^4.6.4",
-    "vite": "^3.0.7"
+    "vite": "^3.0.7",
+    "vite-plugin-pwa": "^0.14.7"
   }
 }
