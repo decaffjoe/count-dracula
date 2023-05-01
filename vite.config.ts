@@ -2,7 +2,8 @@ import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 import { VitePWA } from 'vite-plugin-pwa'
 
-// https://vitejs.dev/config/
+// GENERAL -> https://vitejs.dev/config/
+// PWA -> https://vite-pwa-org.netlify.app/guide/pwa-minimal-requirements.html
 export default defineConfig({
   plugins: [
     svelte(),
